@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "full ecommerce site using mern",
   "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "SET NODE_ENV=DEVELOPMENT& nodemon backend/server",
+    "prod": "SET NODE_ENV=PRODUCTION& nodemon backend/server"
+  },
   "repository": "https://github.com/muhiddinjv/shopit.git",
   "author": "Emuallim <muhiddinjv@gmail.com>",
   "license": "MIT",
@@ -10,5 +15,8 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "mongoose": "^6.2.10"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
