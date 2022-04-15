@@ -36,8 +36,8 @@ const productSchema = new mongoose.Schema({
     category: {
         type: String,
         required: [true, 'Please select category for this product'],
-        enum:{
-            values:[
+        enum: {
+            values: [
                 'Electronics',
                 'Cameras',
                 'Laptop',
@@ -54,15 +54,15 @@ const productSchema = new mongoose.Schema({
             message:'Please select correct category for product'
         }
     },
-    seller:{
-        type:Number,
-        required:[true,'Please enter product seller']
+    seller: {
+        type: Number,
+        required: [true,'Please enter product seller']
     },
-    stock:{
-        type:Number,
+    stock: {
+        type: Number,
         required: [true, 'Please enter product stock'],
         maxLength: [5, 'Product name cannot exceed 5 characters'],
-        default:0
+        default: 0
     },
     numOfReviews: {
         type: Number,
