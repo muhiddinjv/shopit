@@ -8,8 +8,7 @@ const products = require('./routes/product');
 
 app.use('/api/v1', products)
 
-module.exports = app
-
+module.exports = app;
 /*  
     Keybindings: https://gist.github.com/espenbjorkeng/484871484d4bf13ce23d8d115e2e8ef5
     Edit shortcuts: CTRL+SHIFT+P > Preferences: Open Keyboard Shortcuts (JSON)
