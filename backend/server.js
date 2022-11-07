@@ -1,21 +1,12 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import dotenv from "dotenv";
-import mongoose from "mongoose";
 import productRouter from "./routes/productsRoutes.js";
+import dotenv from "dotenv";
+import connectdb from "./utils/connectdb.js";
 
 dotenv.config();
-
-// connect with mongodb
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log("connected to DB");
-  })
-  .catch((err) => {
-    console.log(err.message);
-  });
+connectdb();
 
 const app = express();
 

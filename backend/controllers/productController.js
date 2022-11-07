@@ -2,9 +2,12 @@ import Product from "../models/productModel.js";
 
 export const addProductController = async (req, res) => {
   try {
-    const newProducts = new Product(req.body);
-    await newProducts.save();
-    res.status(200).send("Product created successfully!");
+    const newProduct = new Product(req.body);
+    await newProduct.save();
+    res.status(200).send({
+      success: true,
+      product: newProduct,
+    });
   } catch (error) {
     console.log(error);
   }
