@@ -6,6 +6,7 @@ export const addProductController = async (req, res) => {
     await newProduct.save();
     res.status(200).send({
       success: true,
+      message: "Product created successfully!",
       newProduct,
     });
   } catch (error) {
@@ -30,9 +31,9 @@ export const getProductController = async (req, res) => {
   const product = await Product.findById(req.params.id);
 
   if (!product) {
-    res.status(404).send({
+    return res.status(404).send({
       success: false,
-      message: "Product not found",
+      message: "Product not found!",
     });
   }
 
@@ -40,4 +41,16 @@ export const getProductController = async (req, res) => {
     success: true,
     product,
   });
+};
+
+export const deleteProductController = async (req, res) => {
+  try {
+    await Product.findOneAndDelete(req.params.id);
+    res.status(200).send({
+      success: true,
+      message: "Product deleted!",
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
