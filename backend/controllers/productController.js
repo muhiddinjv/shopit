@@ -1,8 +1,10 @@
 import Product from "../models/productModel.js";
+import ErrorHandler from "../utils/errorHandler.js";
 
 export const addProductController = async (req, res) => {
   const newProduct = new Product(req.body);
   await newProduct.save();
+
   res.status(200).send({
     success: true,
     message: "Product created successfully!",
@@ -12,6 +14,7 @@ export const addProductController = async (req, res) => {
 
 export const getProductsController = async (req, res) => {
   const products = await Product.find();
+
   res.status(200).send({
     success: true,
     count: products.length,
@@ -19,14 +22,11 @@ export const getProductsController = async (req, res) => {
   });
 };
 
-export const getProductController = async (req, res) => {
+export const getProductController = async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
   if (!product) {
-    return res.status(404).send({
-      success: false,
-      message: "Product not found!",
-    });
+    return next(new ErrorHandler("Product not found", 404));
   }
 
   res.status(200).send({
@@ -39,10 +39,7 @@ export const updateProductController = async (req, res) => {
   let product = Product.findById(req.params.id);
 
   if (!product) {
-    return res.status(404).send({
-      success: false,
-      message: "Product not found!",
-    });
+    return next(new ErrorHandler("Product not found", 404));
   }
 
   product = await Product.findByIdAndUpdate(req.params.id, req.body, {
@@ -61,10 +58,7 @@ export const deleteProductController = async (req, res) => {
   const product = Product.findById(req.params.id);
 
   if (!product) {
-    return res.status(404).send({
-      success: false,
-      message: "Product not found!",
-    });
+    return next(new ErrorHandler("Product not found", 404));
   }
 
   await product.deleteOne();
