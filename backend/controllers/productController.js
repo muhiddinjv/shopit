@@ -1,30 +1,22 @@
 import Product from "../models/productModel.js";
 
 export const addProductController = async (req, res) => {
-  try {
-    const newProduct = new Product(req.body);
-    await newProduct.save();
-    res.status(200).send({
-      success: true,
-      message: "Product created successfully!",
-      newProduct,
-    });
-  } catch (error) {
-    console.log(error);
-  }
+  const newProduct = new Product(req.body);
+  await newProduct.save();
+  res.status(200).send({
+    success: true,
+    message: "Product created successfully!",
+    newProduct,
+  });
 };
 
 export const getProductsController = async (req, res) => {
-  try {
-    const products = await Product.find();
-    res.status(200).send({
-      success: true,
-      count: products.length,
-      products,
-    });
-  } catch (error) {
-    console.log(error);
-  }
+  const products = await Product.find();
+  res.status(200).send({
+    success: true,
+    count: products.length,
+    products,
+  });
 };
 
 export const getProductController = async (req, res) => {
@@ -66,22 +58,40 @@ export const updateProductController = async (req, res) => {
 };
 
 export const deleteProductController = async (req, res) => {
-  Product.findOneAndDelete({ _id: req.params.id })
-    .then((product) => {
-      if (!product) {
-        res.status(400).send({
-          success: false,
-          message: "Product was not found!",
-        });
-      } else {
-        res.status(200).send({
-          success: true,
-          message: "Product was deleted!",
-        });
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Error: " + err);
+  const product = Product.findById(req.params.id);
+
+  if (!product) {
+    return res.status(404).send({
+      success: false,
+      message: "Product not found!",
     });
+  }
+
+  await product.deleteOne();
+
+  res.status(200).send({
+    success: true,
+    message: "Product was deleted",
+  });
 };
+
+// export const deleteProductController = async (req, res) => {
+//   Product.findOneAndDelete({ _id: req.params.id })
+//     .then((product) => {
+//       if (!product) {
+//         res.status(400).send({
+//           success: false,
+//           message: "Product was not found!",
+//         });
+//       } else {
+//         res.status(200).send({
+//           success: true,
+//           message: "Product was deleted!",
+//         });
+//       }
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//       res.status(500).send("Error: " + err);
+//     });
+// };
