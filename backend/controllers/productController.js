@@ -43,14 +43,45 @@ export const getProductController = async (req, res) => {
   });
 };
 
-export const deleteProductController = async (req, res) => {
-  try {
-    await Product.findOneAndDelete(req.params.id);
-    res.status(200).send({
-      success: true,
-      message: "Product deleted!",
+export const updateProductController = async (req, res) => {
+  let product = Product.findById(req.params.id);
+
+  if (!product) {
+    return res.status(404).send({
+      success: false,
+      message: "Product not found!",
     });
-  } catch (error) {
-    console.log(error);
   }
+
+  product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+
+  res.status(200).send({
+    success: true,
+    product,
+  });
+};
+
+export const deleteProductController = async (req, res) => {
+  Product.findOneAndDelete({ _id: req.params.id })
+    .then((product) => {
+      if (!product) {
+        res.status(400).send({
+          success: false,
+          message: "Product was not found!",
+        });
+      } else {
+        res.status(200).send({
+          success: true,
+          message: "Product was deleted!",
+        });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 };

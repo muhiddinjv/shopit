@@ -4,13 +4,15 @@ import {
   getProductController,
   addProductController,
   deleteProductController,
+  updateProductController,
 } from "../controllers/productController.js";
 
 const productRouter = express.Router();
 
-productRouter.post("/addproduct", addProductController);
 productRouter.get("/getproducts", getProductsController);
 productRouter.get("/getproduct/:id", getProductController);
-productRouter.delete("/deleteproduct/:id", deleteProductController);
+productRouter.post("/admin/addproduct", addProductController);
+productRouter.delete("/admin/deleteproduct/:id", deleteProductController);
+productRouter.put("/admin/updateproduct/:id", updateProductController);
 
 export default productRouter;
