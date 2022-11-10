@@ -1,6 +1,6 @@
 import Product from "../models/productModel.js";
 import ErrorHandler from "../utils/errorHandler.js";
-import catchAsyncErrors from "../middlewares/catchAsyncErr.js";
+import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 
 export const addProductController = catchAsyncErrors(async (req, res) => {
   const newProduct = new Product(req.body);
