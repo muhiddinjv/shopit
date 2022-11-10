@@ -1,7 +1,8 @@
 import Product from "../models/productModel.js";
 import ErrorHandler from "../utils/errorHandler.js";
+import catchAsyncErrors from "../middlewares/catchAsyncErr.js";
 
-export const addProductController = async (req, res) => {
+export const addProductController = catchAsyncErrors(async (req, res) => {
   const newProduct = new Product(req.body);
   await newProduct.save();
 
@@ -10,9 +11,9 @@ export const addProductController = async (req, res) => {
     message: "Product created successfully!",
     newProduct,
   });
-};
+});
 
-export const getProductsController = async (req, res) => {
+export const getProductsController = catchAsyncErrors(async (req, res) => {
   const products = await Product.find();
 
   res.status(200).send({
@@ -20,9 +21,9 @@ export const getProductsController = async (req, res) => {
     count: products.length,
     products,
   });
-};
+});
 
-export const getProductController = async (req, res, next) => {
+export const getProductController = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
   if (!product) {
@@ -33,9 +34,9 @@ export const getProductController = async (req, res, next) => {
     success: true,
     product,
   });
-};
+});
 
-export const updateProductController = async (req, res) => {
+export const updateProductController = catchAsyncErrors(async (req, res) => {
   let product = Product.findById(req.params.id);
 
   if (!product) {
@@ -52,9 +53,9 @@ export const updateProductController = async (req, res) => {
     success: true,
     product,
   });
-};
+});
 
-export const deleteProductController = async (req, res) => {
+export const deleteProductController = catchAsyncErrors(async (req, res) => {
   const product = Product.findById(req.params.id);
 
   if (!product) {
@@ -67,25 +68,4 @@ export const deleteProductController = async (req, res) => {
     success: true,
     message: "Product was deleted",
   });
-};
-
-// export const deleteProductController = async (req, res) => {
-//   Product.findOneAndDelete({ _id: req.params.id })
-//     .then((product) => {
-//       if (!product) {
-//         res.status(400).send({
-//           success: false,
-//           message: "Product was not found!",
-//         });
-//       } else {
-//         res.status(200).send({
-//           success: true,
-//           message: "Product was deleted!",
-//         });
-//       }
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       res.status(500).send("Error: " + err);
-//     });
-// };
+});
