@@ -1,10 +1,17 @@
 import express from "express";
-import bodyParser from "body-parser";
-import cors from "cors";
-import productRouter from "./routes/productsRoutes.js";
 import dotenv from "dotenv";
+import cors from "cors";
+import bodyParser from "body-parser";
 import connectdb from "./utils/connectdb.js";
+import productRouter from "./routes/productsRoutes.js";
 import errorMiddleware from "./middlewares/errors.js";
+
+//handle uncaught exceptions
+process.on("uncaughtException", (err) => {
+  console.log(`Error: ${err.stack}`);
+  console.log("Shutting down due to uncaught exception");
+  process.exit(1);
+});
 
 dotenv.config();
 connectdb();
@@ -27,8 +34,17 @@ app.use(errorMiddleware);
 const { PORT, NODE_ENV } = process.env;
 
 //listen
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(
     `server running on port http://localhost:${PORT} in ${NODE_ENV} mode`
   );
+});
+
+//Handle unhandled promise rejections
+process.on("unhandledRejection", (err) => {
+  console.log(`Error: ${err.message}`);
+  console.log("Shutting down the server due to unhandled promise rejection");
+  server.close(() => {
+    process.exit(1);
+  });
 });
