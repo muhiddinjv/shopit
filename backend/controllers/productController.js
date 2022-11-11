@@ -15,7 +15,9 @@ export const addProductController = catchAsyncErrors(async (req, res) => {
 });
 
 export const getProductsController = catchAsyncErrors(async (req, res) => {
-  const apiFeatures = new APIFeatures(Product.find(), req.query).search();
+  const apiFeatures = new APIFeatures(Product.find(), req.query)
+    .search()
+    .filter();
   const products = await apiFeatures.query;
 
   res.status(200).send({
