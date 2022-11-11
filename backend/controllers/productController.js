@@ -1,6 +1,7 @@
 import Product from "../models/productModel.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
+import APIFeatures from "../utils/apiFeatures.js";
 
 export const addProductController = catchAsyncErrors(async (req, res) => {
   const newProduct = new Product(req.body);
@@ -14,7 +15,8 @@ export const addProductController = catchAsyncErrors(async (req, res) => {
 });
 
 export const getProductsController = catchAsyncErrors(async (req, res) => {
-  const products = await Product.find();
+  const apiFeatures = new APIFeatures(Product.find(), req.query).search();
+  const products = await apiFeatures.query;
 
   res.status(200).send({
     success: true,
