@@ -26,11 +26,19 @@ class APIFeatures {
     removeFields.forEach((el) => delete queryCopy[el]);
 
     // advanced filter for price, ratings, etc.
-    // getproducts?keyword=apple&price[gte]=1&price[lte]=200
     let queryStr = JSON.stringify(queryCopy);
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (match) => `$${match}`);
     this.query = this.query.find(JSON.parse(queryStr));
 
+    return this;
+  }
+
+  pagination(resPerPage) {
+    const currentPage = Number(this.queryStr.page) || 1;
+    // if resPerPage = 10 & currentPage = 4
+    const skip = resPerPage * (currentPage - 1);
+    // Then 4 - 1 = 3 AND 10 * 3 = 30
+    this.query = this.query.limit(resPerPage).skip(skip);
     return this;
   }
 }

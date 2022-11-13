@@ -15,15 +15,18 @@ export const addProductController = catchAsyncErrors(async (req, res) => {
 });
 
 export const getProductsController = catchAsyncErrors(async (req, res) => {
+  const resPerPage = 3;
+  const productCount = await Product.countDocuments(); // num of all products in db
   const apiFeatures = new APIFeatures(Product.find(), req.query)
     .search()
-    .filter();
+    .filter()
+    .pagination(resPerPage);
   let products = await apiFeatures.query;
-  // const products = await Product.find({ price: req.query.price });
 
   res.status(200).send({
     success: true,
     count: products.length,
+    productCount,
     products,
   });
 });
