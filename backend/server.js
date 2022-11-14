@@ -4,6 +4,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import connectdb from "./utils/connectdb.js";
 import productRouter from "./routes/productsRoutes.js";
+import userRouter from "./routes/userRoutes.js";
 import errorMiddleware from "./middlewares/errors.js";
 
 //handle uncaught exceptions
@@ -25,7 +26,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //routes
-app.use("/api/products/", productRouter);
+app.use("/api/", productRouter);
+app.use("/api/", userRouter);
 
 //middleware
 app.use(errorMiddleware);
@@ -36,7 +38,7 @@ const { PORT, NODE_ENV } = process.env;
 //listen
 const server = app.listen(PORT, () => {
   console.log(
-    `server running on port http://localhost:${PORT} in ${NODE_ENV} mode`
+    `server running on port http://localhost:${PORT} in ${NODE_ENV} mode `
   );
 });
 
