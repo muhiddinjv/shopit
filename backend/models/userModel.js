@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 import validator from "validator";
+import bcrypt from "bcryptjs";
 
 const userSchema = mongoose.Schema({
   name: {
     type: String,
     required: [true, "Please enter your name"],
-    maxLength: [30, "Your name cannot exceed 30 characters"],
+    maxlength: [30, "Your name cannot exceed 30 characters"],
   },
   email: {
     type: String,
@@ -39,6 +40,15 @@ const userSchema = mongoose.Schema({
   },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
+});
+
+// encrypting password before saving the user
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+  //10 (higher=stronger) recommended for sort value = hash.length
+  this.password = await bcrypt.hash(this.password, 10);
 });
 
 const User = mongoose.model("User", userSchema);

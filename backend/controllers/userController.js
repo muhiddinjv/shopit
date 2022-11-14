@@ -49,7 +49,7 @@ export const getUserController = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const updateUserController = catchAsyncErrors(async (req, res, next) => {
-  let user = await User.findById(req.params.id);
+  let user = User.findById(req.params.id);
 
   if (!user) {
     return next(new ErrorHandler("user not found", 404));
