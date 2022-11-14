@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const userSchema = mongoose.Schema({
   name: {
@@ -42,7 +43,7 @@ const userSchema = mongoose.Schema({
   resetPasswordExpire: Date,
 });
 
-// encrypting password before saving the user
+// encrypt password before saving the user
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
@@ -50,6 +51,13 @@ userSchema.pre("save", async function (next) {
   //10 (higher=stronger) recommended for sort value = hash.length
   this.password = await bcrypt.hash(this.password, 10);
 });
+
+// return jwt token
+userSchema.methods.getJwtToken = function () {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_TIME,
+  });
+};
 
 const User = mongoose.model("User", userSchema);
 export default User;

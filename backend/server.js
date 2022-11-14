@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import bodyParser from "body-parser";
-import connectdb from "./utils/connectdb.js";
+import connectdb from "./config/connectdb.js";
 import productRouter from "./routes/productsRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import errorMiddleware from "./middlewares/errors.js";
@@ -14,7 +14,8 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-dotenv.config();
+// dotenv.config();
+dotenv.config({ path: "config/config.env" });
 connectdb();
 
 const app = express();
@@ -38,7 +39,7 @@ const { PORT, NODE_ENV } = process.env;
 //listen
 const server = app.listen(PORT, () => {
   console.log(
-    `server running on port http://localhost:${PORT} in ${NODE_ENV} mode `
+    `server running on port http://localhost:${PORT} in ${NODE_ENV} mode`
   );
 });
 

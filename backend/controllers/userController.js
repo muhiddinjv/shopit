@@ -16,12 +16,15 @@ export const registerUserController = catchAsyncErrors(async (req, res) => {
       url: "https://res.cloudinary.com/bookit/image/upload/v1606305757/avatars/kccvibpsuimwfepb3m.png",
     },
   });
+
+  const token = newUser.getJwtToken();
+
   await newUser.save();
 
   res.status(201).send({
     success: true,
     message: "User registered successfully!",
-    newUser,
+    token,
   });
 });
 
