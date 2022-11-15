@@ -10,10 +10,22 @@ import { isAuthenticatedUser } from "../middlewares/auth.js";
 
 const productRouter = express.Router();
 
-productRouter.get("/getproducts", isAuthenticatedUser, getProductsController);
+productRouter.get("/getproducts", getProductsController);
 productRouter.get("/getproduct/:id", getProductController);
-productRouter.post("/admin/addproduct", addProductController);
-productRouter.delete("/admin/deleteproduct/:id", deleteProductController);
-productRouter.put("/admin/updateproduct/:id", updateProductController);
+productRouter.post(
+  "/admin/addproduct",
+  isAuthenticatedUser,
+  addProductController
+);
+productRouter.delete(
+  "/admin/deleteproduct/:id",
+  isAuthenticatedUser,
+  deleteProductController
+);
+productRouter.put(
+  "/admin/updateproduct/:id",
+  isAuthenticatedUser,
+  updateProductController
+);
 
 export default productRouter;

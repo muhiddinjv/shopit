@@ -59,6 +59,18 @@ export const loginUserController = catchAsyncErrors(async (req, res, next) => {
   // });
 });
 
+export const logoutUserController = catchAsyncErrors(async (req, res, next) => {
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+    httpOnly: true,
+  });
+
+  res.status(200).send({
+    success: true,
+    message: "Logged out",
+  });
+});
+
 export const getUsersController = catchAsyncErrors(async (req, res) => {
   const users = await User.find();
 

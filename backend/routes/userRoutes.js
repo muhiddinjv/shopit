@@ -2,6 +2,7 @@ import express from "express";
 import {
   registerUserController,
   loginUserController,
+  logoutUserController,
   getUsersController,
   getUserController,
   updateUserController,
@@ -12,6 +13,7 @@ const userRouter = express.Router();
 
 userRouter.post("/register", registerUserController);
 userRouter.post("/login", loginUserController);
+userRouter.get("/logout", logoutUserController);
 userRouter.get("/getusers", getUsersController);
 userRouter.get("/getuser/:id", getUserController);
 userRouter.put("/updateuser/:id", updateUserController);
