@@ -28,6 +28,35 @@ export const registerUserController = catchAsyncErrors(async (req, res) => {
   });
 });
 
+export const loginUserController = catchAsyncErrors(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  // check if the email & password is entered by the user
+  if (!email || !password) {
+    return next(new ErrorHandler("Please enter email & password"));
+  }
+
+  //find the user in database
+  const user = await User.findOne({ email }).select("+password");
+  if (!user) {
+    return next(new ErrorHandler("Invalid Email or Password"));
+  }
+
+  //check if the password is correct
+  const isPasswordMatched = await user.comparePassword(password);
+  if (!isPasswordMatched) {
+    return next(new ErrorHandler("Invalid Email or Password"));
+  }
+
+  const userToken = user.getJwtToken();
+
+  res.status(200).send({
+    success: true,
+    message: "User logged in successfully!",
+    userToken,
+  });
+});
+
 export const getUsersController = catchAsyncErrors(async (req, res) => {
   const users = await User.find();
 

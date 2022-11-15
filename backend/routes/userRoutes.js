@@ -1,6 +1,7 @@
 import express from "express";
 import {
   registerUserController,
+  loginUserController,
   getUsersController,
   getUserController,
   updateUserController,
@@ -10,6 +11,7 @@ import {
 const userRouter = express.Router();
 
 userRouter.post("/register", registerUserController);
+userRouter.post("/login", loginUserController);
 userRouter.get("/getusers", getUsersController);
 userRouter.get("/getuser/:id", getUserController);
 userRouter.put("/updateuser/:id", updateUserController);
