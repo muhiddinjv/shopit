@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 import ErrorHandler from "../utils/errorHandler.js";
+import sendToken from "../utils/jwtToken.js";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 
 export const registerUserController = catchAsyncErrors(async (req, res) => {
@@ -17,15 +18,16 @@ export const registerUserController = catchAsyncErrors(async (req, res) => {
     },
   });
 
-  const token = newUser.getJwtToken();
-
   await newUser.save();
 
-  res.status(201).send({
-    success: true,
-    message: "User registered successfully!",
-    token,
-  });
+  sendToken(newUser, 200, res);
+
+  // const token = newUser.getJwtToken();
+  // res.status(201).send({
+  //   success: true,
+  //   message: "User registered successfully!",
+  //   token,
+  // });
 });
 
 export const loginUserController = catchAsyncErrors(async (req, res, next) => {
@@ -48,13 +50,13 @@ export const loginUserController = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Invalid Email or Password"));
   }
 
-  const userToken = user.getJwtToken();
-
-  res.status(200).send({
-    success: true,
-    message: "User logged in successfully!",
-    userToken,
-  });
+  sendToken(user, 200, res);
+  // const userToken = user.getJwtToken();
+  // res.status(200).send({
+  //   success: true,
+  //   message: "User logged in successfully!",
+  //   userToken,
+  // });
 });
 
 export const getUsersController = catchAsyncErrors(async (req, res) => {
