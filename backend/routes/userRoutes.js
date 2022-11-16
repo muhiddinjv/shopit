@@ -19,14 +19,18 @@ const userRouter = express.Router();
 userRouter.post("/register", registerUserController);
 userRouter.post("/login", loginUserController);
 userRouter.get("/logout", logoutUserController);
-userRouter.post("/forgotpass", forgotPasswordController);
-userRouter.put("/resetpass/:token", resetPasswordController);
+userRouter.post("/password/forgot", forgotPasswordController);
+userRouter.put("/password/reset/:token", resetPasswordController);
 
 //user routes
-userRouter.get("/getusers", getUsersController);
-userRouter.get("/getcurruser", isAuthenticatedUser, getCurrUserController);
-userRouter.put("/updatepass", isAuthenticatedUser, updatePasswordController);
-userRouter.put("/updateuser/:id", isAuthenticatedUser, updateUserController);
-userRouter.delete("/deleteuser/:id", isAuthenticatedUser, deleteUserController);
+userRouter.get("/user/all", getUsersController);
+userRouter.get("/user/current", isAuthenticatedUser, getCurrUserController);
+userRouter.put(
+  "/password/update",
+  isAuthenticatedUser,
+  updatePasswordController
+);
+userRouter.put("/user/update", isAuthenticatedUser, updateUserController);
+userRouter.delete("/user/delete", isAuthenticatedUser, deleteUserController);
 
 export default userRouter;

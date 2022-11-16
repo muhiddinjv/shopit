@@ -174,24 +174,15 @@ export const updatePasswordController = catchAsyncErrors(
   }
 );
 
-export const getUsersController = catchAsyncErrors(async (req, res) => {
-  const users = await User.find();
-
-  res.status(200).send({
-    success: true,
-    count: users.length,
-    users,
-  });
-});
-
 export const updateUserController = catchAsyncErrors(async (req, res, next) => {
-  let user = User.findById(req.params.id);
+  const newUserData = {
+    name: req.body.name,
+    email: req.body.email,
+  };
 
-  if (!user) {
-    return next(new ErrorHandler("user not found", 404));
-  }
+  //TOOD: update avatar
 
-  user = await User.findByIdAndUpdate(req.params.id, req.body, {
+  const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,
     runValidators: true,
     useFindAndModify: false,
@@ -200,6 +191,16 @@ export const updateUserController = catchAsyncErrors(async (req, res, next) => {
   res.status(200).send({
     success: true,
     user,
+  });
+});
+
+export const getUsersController = catchAsyncErrors(async (req, res) => {
+  const users = await User.find();
+
+  res.status(200).send({
+    success: true,
+    count: users.length,
+    users,
   });
 });
 
