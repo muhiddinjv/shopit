@@ -174,25 +174,27 @@ export const updatePasswordController = catchAsyncErrors(
   }
 );
 
-export const updateUserController = catchAsyncErrors(async (req, res, next) => {
-  const newUserData = {
-    name: req.body.name,
-    email: req.body.email,
-  };
+export const updateProfileController = catchAsyncErrors(
+  async (req, res, next) => {
+    const newUserData = {
+      name: req.body.name,
+      email: req.body.email,
+    };
 
-  //TOOD: update avatar
+    //TOOD: update avatar
 
-  const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
-    new: true,
-    runValidators: true,
-    useFindAndModify: false,
-  });
+    const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    });
 
-  res.status(200).send({
-    success: true,
-    user,
-  });
-});
+    res.status(200).send({
+      success: true,
+      user,
+    });
+  }
+);
 
 export const getUsersController = catchAsyncErrors(async (req, res) => {
   const users = await User.find();
@@ -221,8 +223,39 @@ export const getUserDetailsController = catchAsyncErrors(
   }
 );
 
+export const updateUserController = catchAsyncErrors(async (req, res, next) => {
+  const { name, email, role } = req.body;
+
+  const newUserData = {
+    name: name,
+    email: email,
+    role: role,
+  };
+
+  const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+
+  res.status(200).send({
+    success: true,
+    user,
+  });
+});
+
 export const deleteUserController = catchAsyncErrors(async (req, res) => {
-  const user = await User.findByIdAndDelete(req.params.id);
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(
+      new ErrorHandler(`User with id ${req.params.id} not found`, 404)
+    );
+  }
+
+  //TODO: remove avatar from cloudinary
+
+  await user.remove();
 
   res.status(200).send({
     success: true,

@@ -8,8 +8,9 @@ import {
   getUsersController,
   getUserDetailsController,
   getCurrUserController,
-  updateUserController,
+  updateProfileController,
   deleteUserController,
+  updateUserController,
   updatePasswordController,
 } from "../controllers/userController.js";
 import { isAuthenticatedUser, authorizeRoles } from "../middlewares/auth.js";
@@ -30,7 +31,7 @@ userRouter.put(
   isAuthenticatedUser,
   updatePasswordController
 );
-userRouter.put("/user/update", isAuthenticatedUser, updateUserController);
+userRouter.put("/user/update", isAuthenticatedUser, updateProfileController);
 userRouter.get(
   "/admin/users",
   isAuthenticatedUser,
@@ -43,8 +44,14 @@ userRouter.get(
   authorizeRoles("admin"),
   getUserDetailsController
 );
+userRouter.put(
+  "/admin/user/:id",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  updateUserController
+);
 userRouter.delete(
-  "/user/delete/:id",
+  "/admin/user/:id",
   isAuthenticatedUser,
   authorizeRoles("admin"),
   deleteUserController
