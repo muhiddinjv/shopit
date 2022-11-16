@@ -4,7 +4,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import connectdb from "./config/connectdb.js";
-import productRouter from "./routes/productsRoutes.js";
+import productRouter from "./routes/productRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import authRouter from "./routes/authRoutes.js";
 import errorMiddleware from "./middlewares/errors.js";
