@@ -204,17 +204,29 @@ export const getUsersController = catchAsyncErrors(async (req, res) => {
   });
 });
 
-export const deleteUserController = catchAsyncErrors(async (req, res) => {
-  const user = User.findById(req.params.id);
+export const getUserDetailsController = catchAsyncErrors(
+  async (req, res, next) => {
+    const user = await User.findById(req.params.id);
 
-  if (!user) {
-    return next(new ErrorHandler("user not found", 404));
+    if (!user) {
+      return next(
+        new ErrorHandler(`User with id ${req.params.id} not found`, 404)
+      );
+    }
+
+    res.status(200).send({
+      success: true,
+      user,
+    });
   }
+);
 
-  await user.deleteOne();
+export const deleteUserController = catchAsyncErrors(async (req, res) => {
+  const user = await User.findByIdAndDelete(req.params.id);
 
   res.status(200).send({
     success: true,
     message: "user was deleted",
+    user,
   });
 });

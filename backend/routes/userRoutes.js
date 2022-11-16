@@ -6,12 +6,13 @@ import {
   forgotPasswordController,
   resetPasswordController,
   getUsersController,
+  getUserDetailsController,
   getCurrUserController,
   updateUserController,
   deleteUserController,
   updatePasswordController,
 } from "../controllers/userController.js";
-import { isAuthenticatedUser } from "../middlewares/auth.js";
+import { isAuthenticatedUser, authorizeRoles } from "../middlewares/auth.js";
 
 const userRouter = express.Router();
 
@@ -23,7 +24,6 @@ userRouter.post("/password/forgot", forgotPasswordController);
 userRouter.put("/password/reset/:token", resetPasswordController);
 
 //user routes
-userRouter.get("/user/all", getUsersController);
 userRouter.get("/user/current", isAuthenticatedUser, getCurrUserController);
 userRouter.put(
   "/password/update",
@@ -31,6 +31,23 @@ userRouter.put(
   updatePasswordController
 );
 userRouter.put("/user/update", isAuthenticatedUser, updateUserController);
-userRouter.delete("/user/delete", isAuthenticatedUser, deleteUserController);
+userRouter.get(
+  "/admin/users",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  getUsersController
+);
+userRouter.get(
+  "/admin/user/:id",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  getUserDetailsController
+);
+userRouter.delete(
+  "/user/delete/:id",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  deleteUserController
+);
 
 export default userRouter;
