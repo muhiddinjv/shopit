@@ -3,6 +3,7 @@ import {
   registerUserController,
   loginUserController,
   logoutUserController,
+  forgotPasswordController,
   getUsersController,
   getUserController,
   updateUserController,
@@ -14,6 +15,7 @@ const userRouter = express.Router();
 userRouter.post("/register", registerUserController);
 userRouter.post("/login", loginUserController);
 userRouter.get("/logout", logoutUserController);
+userRouter.post("/password/forgot", forgotPasswordController);
 userRouter.get("/getusers", getUsersController);
 userRouter.get("/getuser/:id", getUserController);
 userRouter.put("/updateuser/:id", updateUserController);

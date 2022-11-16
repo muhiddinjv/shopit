@@ -2,6 +2,7 @@ import User from "../models/userModel.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import sendToken from "../utils/jwtToken.js";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
+import sendEmail from "../utils/sendEmail.js";
 
 export const registerUserController = catchAsyncErrors(async (req, res) => {
   const { name, email, password } = req.body;
@@ -21,7 +22,6 @@ export const registerUserController = catchAsyncErrors(async (req, res) => {
   await newUser.save();
 
   sendToken(newUser, 200, res);
-
   // const token = newUser.getJwtToken();
   // res.status(201).send({
   //   success: true,
@@ -51,13 +51,49 @@ export const loginUserController = catchAsyncErrors(async (req, res, next) => {
   }
 
   sendToken(user, 200, res);
-  // const userToken = user.getJwtToken();
-  // res.status(200).send({
-  //   success: true,
-  //   message: "User logged in successfully!",
-  //   userToken,
-  // });
 });
+
+export const forgotPasswordController = catchAsyncErrors(
+  async (req, res, next) => {
+    const user = await User.findOne({ email: req.body.email });
+
+    if (!user) {
+      return next(new ErrorHandler("Not found user with this email", 404));
+    }
+
+    // get reset token
+    const resetToken = user.getResetPasswordToken();
+
+    await user.save({ validateBeforeSave: false });
+
+    // create reset password url
+    const resetUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/api/password/reset/${resetToken}`;
+
+    const message = `Your password reset token is as follow:\n\n${resetUrl}\n\nIf you have not requested this email, then ignore it.`;
+
+    try {
+      await sendEmail({
+        email: user.email,
+        subject: "ShopIT Password Recovery",
+        message,
+      });
+
+      res.status(200).send({
+        success: true,
+        message: `Email sent to ${user.email}`,
+      });
+    } catch (error) {
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+
+      await user.save({ validateBeforeSave: false });
+
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }
+);
 
 export const logoutUserController = catchAsyncErrors(async (req, res, next) => {
   res.cookie("token", null, {
