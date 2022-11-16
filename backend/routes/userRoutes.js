@@ -1,5 +1,10 @@
 import express from "express";
 import {
+  registerUserController,
+  loginUserController,
+  logoutUserController,
+  forgotPasswordController,
+  resetPasswordController,
   getUsersController,
   getCurrUserController,
   updateUserController,
@@ -8,6 +13,13 @@ import {
 import { isAuthenticatedUser } from "../middlewares/auth.js";
 
 const userRouter = express.Router();
+
+//auth routes
+userRouter.post("/register", registerUserController);
+userRouter.post("/login", loginUserController);
+userRouter.get("/logout", logoutUserController);
+userRouter.post("/forgotpass", forgotPasswordController);
+userRouter.put("/resetpass/:token", resetPasswordController);
 
 //user routes
 userRouter.get("/getusers", getUsersController);

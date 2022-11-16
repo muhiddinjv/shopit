@@ -130,6 +130,10 @@ export const resetPasswordController = catchAsyncErrors(
   }
 );
 
+export const updatePasswordController = catchAsyncErrors(
+  async (req, res, next) => {}
+);
+
 export const logoutUserController = catchAsyncErrors(async (req, res, next) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),
