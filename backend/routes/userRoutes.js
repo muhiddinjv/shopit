@@ -9,6 +9,7 @@ import {
   getCurrUserController,
   updateUserController,
   deleteUserController,
+  updatePasswordController,
 } from "../controllers/userController.js";
 import { isAuthenticatedUser } from "../middlewares/auth.js";
 
@@ -24,6 +25,7 @@ userRouter.put("/resetpass/:token", resetPasswordController);
 //user routes
 userRouter.get("/getusers", getUsersController);
 userRouter.get("/getcurruser", isAuthenticatedUser, getCurrUserController);
+userRouter.put("/updatepass", isAuthenticatedUser, updatePasswordController);
 userRouter.put("/updateuser/:id", isAuthenticatedUser, updateUserController);
 userRouter.delete("/deleteuser/:id", isAuthenticatedUser, deleteUserController);
 
