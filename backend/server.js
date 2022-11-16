@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import connectdb from "./config/connectdb.js";
 import productRouter from "./routes/productsRoutes.js";
 import userRouter from "./routes/userRoutes.js";
+import authRouter from "./routes/authRoutes.js";
 import errorMiddleware from "./middlewares/errors.js";
 
 //handle uncaught exceptions
@@ -30,6 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //routes
 app.use("/api/", productRouter);
+app.use("/api/", authRouter);
 app.use("/api/", userRouter);
 
 //middleware

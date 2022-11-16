@@ -42,7 +42,7 @@ const errorMiddleware = async (err, req, res, next) => {
 
     // handle Expire JWT error
     if (err.name === "TokenExpiredError") {
-      const message = "JSON Web Token is expired. Try again!";
+      const message = "JSON Web Token has expired. Try again!";
       error = new ErrorHandler(message, 400);
     }
 

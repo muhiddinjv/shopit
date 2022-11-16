@@ -142,6 +142,21 @@ export const logoutUserController = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+export const getCurrUserController = catchAsyncErrors(
+  async (req, res, next) => {
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return next(new ErrorHandler("user not found", 404));
+    }
+
+    res.status(200).send({
+      success: true,
+      user,
+    });
+  }
+);
+
 export const getUsersController = catchAsyncErrors(async (req, res) => {
   const users = await User.find();
 
@@ -149,19 +164,6 @@ export const getUsersController = catchAsyncErrors(async (req, res) => {
     success: true,
     count: users.length,
     users,
-  });
-});
-
-export const getUserController = catchAsyncErrors(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
-
-  if (!user) {
-    return next(new ErrorHandler("user not found", 404));
-  }
-
-  res.status(200).send({
-    success: true,
-    user,
   });
 });
 
