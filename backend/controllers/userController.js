@@ -130,6 +130,23 @@ export const resetPasswordController = catchAsyncErrors(
   }
 );
 
+export const updatePasswordController = catchAsyncErrors(
+  async (req, res, next) => {
+    const user = await User.findById(req.user.id).select("+password");
+
+    //check previous password
+    const isMatched = await user.comparePassword(req.body.oldPassword);
+    if (!isMatched) {
+      return next(new ErrorHandler("Old password in incorrect", 400));
+    }
+
+    user.password = req.body.password;
+    await user.save();
+
+    sendToken(user, 200, res);
+  }
+);
+
 export const logoutUserController = catchAsyncErrors(async (req, res, next) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),
@@ -154,23 +171,6 @@ export const getCurrUserController = catchAsyncErrors(
       success: true,
       user,
     });
-  }
-);
-
-export const updatePasswordController = catchAsyncErrors(
-  async (req, res, next) => {
-    const user = await User.findById(req.user.id).select("+password");
-
-    //check previous password
-    const isMatched = await user.comparePassword(req.body.oldPassword);
-    if (!isMatched) {
-      return next(new ErrorHandler("Old password in incorrect", 400));
-    }
-
-    user.password = req.body.password;
-    await user.save();
-
-    sendToken(user, 200, res);
   }
 );
 
