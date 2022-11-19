@@ -1,8 +1,4 @@
 import mongoose from "mongoose";
-import validator from "validator";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import crypto from "crypto";
 
 const orderSchema = mongoose.Schema({
   shippingInfo: {
@@ -18,7 +14,7 @@ const orderSchema = mongoose.Schema({
       type: String,
       required: true,
     },
-    phoneNo: {
+    phone: {
       type: Number,
       required: true,
     },

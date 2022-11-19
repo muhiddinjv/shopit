@@ -4,8 +4,6 @@ import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 import APIFeatures from "../utils/apiFeatures.js";
 
 export const addProductController = catchAsyncErrors(async (req, res) => {
-  console.log("req.body.user", req.body.user);
-
   req.body.user = req.user.id;
   const newProduct = new Product(req.body);
   await newProduct.save();
