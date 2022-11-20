@@ -63,3 +63,19 @@ export const getMyOrdersController = catchAsyncErrors(
     });
   }
 );
+
+export const getOrdersController = catchAsyncErrors(async (req, res) => {
+  const allorders = await Order.find();
+
+  let totalAmount = 0;
+  allorders.forEach((order) => {
+    totalAmount += order.totalPrice;
+  });
+
+  res.status(200).send({
+    success: true,
+    count: allorders.length,
+    totalAmount,
+    allorders,
+  });
+});
