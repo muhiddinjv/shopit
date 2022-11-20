@@ -1,6 +1,6 @@
 import Order from "../models/orderModel.js";
+import ErrorHandler from "../utils/errorHandler.js";
 // import Product from "../models/productModel.js";
-// import ErrorHandler from "../utils/errorHandler.js";
 // import sendToken from "../utils/jwtToken.js";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 
@@ -33,6 +33,33 @@ export const createOrderController = catchAsyncErrors(async (req, res) => {
     success: true,
     newOrder,
   });
-
-  // sendToken(newOrder, 200, res);
 });
+
+export const getOrderController = catchAsyncErrors(async (req, res, next) => {
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    return next(new ErrorHandler("No order found with this ID", 404));
+  }
+
+  res.status(200).send({
+    success: true,
+    order,
+  });
+});
+
+export const getMyOrdersController = catchAsyncErrors(
+  async (req, res, next) => {
+    const myorders = await Order.find({ user: req.user.id });
+
+    if (!myorders) {
+      return next(new ErrorHandler("No order found with this ID", 404));
+    }
+
+    res.status(200).send({
+      success: true,
+      count: myorders.length,
+      myorders,
+    });
+  }
+);
