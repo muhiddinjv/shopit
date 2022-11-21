@@ -78,3 +78,76 @@ export const deleteProductController = catchAsyncErrors(async (req, res) => {
     message: "Product was deleted",
   });
 });
+
+// -------------------------- PRODUCT REVIEWS ------------------------------
+// PUT api/review/:id
+export const addProductReviewController = catchAsyncErrors(async (req, res) => {
+  const { rating, comment, productId } = req.body;
+
+  const review = {
+    user: req.user._id,
+    name: req.user.name,
+    rating: Number(rating),
+    comment,
+  };
+
+  let product = await Product.findById(productId);
+
+  const isReviewed = product.reviews.find(
+    (r) => r.user.toString() === req.user._id.toString()
+  );
+
+  if (isReviewed) {
+    product.reviews.forEach((review) => {
+      if (review.user.toString() === req.user._id.toString()) {
+        review.comment = comment;
+        review.rating = rating;
+      }
+    });
+  } else {
+    product.reviews.push(review);
+    product.numOfReviews = product.reviews.length;
+  }
+
+  product.ratings = //add up all reviews & divide by reviews length
+    product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+    product.reviews.length;
+
+  await product.save({ validateBeforeSave: false });
+
+  res.status(200).send({
+    success: true,
+    message: "Review added",
+  });
+});
+
+// GET api/review/all
+export const getProductReviewsController = catchAsyncErrors(
+  async (req, res) => {
+    const product = await Product.findById(req.params.id);
+
+    res.status(200).send({
+      success: true,
+      count: product.reviews.length,
+      reviews: product.reviews,
+    });
+  }
+);
+
+// DELETE api/review/:id
+export const deleteProductReviewsController = catchAsyncErrors(
+  async (req, res) => {
+    let product = Product.findById(req.params.id);
+
+    if (!product) {
+      return next(new ErrorHandler("Review not found", 404));
+    }
+
+    // await product.deleteOne();
+
+    res.status(200).send({
+      success: true,
+      message: "Review was deleted",
+    });
+  }
+);
