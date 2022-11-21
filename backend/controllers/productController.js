@@ -124,7 +124,7 @@ export const addProductReviewController = catchAsyncErrors(async (req, res) => {
 // GET api/review/all
 export const getProductReviewsController = catchAsyncErrors(
   async (req, res) => {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.query.id);
 
     res.status(200).send({
       success: true,
