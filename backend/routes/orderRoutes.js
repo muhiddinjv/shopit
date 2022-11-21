@@ -4,6 +4,8 @@ import {
   getMyOrdersController,
   getOrderController,
   getOrdersController,
+  updateOrderController,
+  deleteOrderController,
   // getProductController,
   // deleteProductController,
   // updateProductController,
@@ -21,12 +23,17 @@ orderRouter.get(
   authorizeRoles("admin"),
   getOrdersController
 );
-// orderRouter.get("/products/:id", getProductController);
-// orderRouter.put(
-//   "/admin/product/:id",
-//   isAuthenticatedUser,
-//   authorizeRoles("admin"),
-//   updateProductController
-// );
+orderRouter.put(
+  "/admin/order/:id",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  updateOrderController
+);
+orderRouter.delete(
+  "/admin/order/:id",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  deleteOrderController
+);
 
 export default orderRouter;

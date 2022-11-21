@@ -33,10 +33,7 @@ export const getProductsController = catchAsyncErrors(async (req, res) => {
 });
 
 export const getProductController = catchAsyncErrors(async (req, res, next) => {
-  const product = await Product.findById(req.params.id).populate(
-    "user",
-    "name email"
-  );
+  const product = await Product.findById(req.params.id);
 
   if (!product) {
     return next(new ErrorHandler("Product not found", 404));
