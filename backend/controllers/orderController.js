@@ -1,8 +1,6 @@
 import Order from "../models/orderModel.js";
 import Product from "../models/productModel.js";
 import ErrorHandler from "../utils/errorHandler.js";
-// import Product from "../models/productModel.js";
-// import sendToken from "../utils/jwtToken.js";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 
 //POST api/order/new
@@ -93,14 +91,13 @@ export const updateOrderController = catchAsyncErrors(
   async (req, res, next) => {
     const order = await Order.findById(req.params.id);
 
-    // if (order.orderStatus === "Delivered") {
-    //   return next(
-    //     new ErrorHandler("You have already delivered this order", 400)
-    //   );
-    // }
+    if (order.orderStatus === "Delivered") {
+      return next(
+        new ErrorHandler("You have already delivered this order", 400)
+      );
+    }
 
     order.orderItems.find(async (item) => {
-      // const productId = JSON.stringify(item._id).replace(/"/g, "");
       await updateStock(item.product, item.quantity);
     });
 
