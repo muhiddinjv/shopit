@@ -36,6 +36,10 @@ productRouter.delete(
 
 productRouter.get("/reviews", isAuthenticatedUser, getProductReviewsController);
 productRouter.put("/review", isAuthenticatedUser, addProductReviewController);
-productRouter.delete("/review/:id", deleteProductReviewsController);
+productRouter.delete(
+  "/reviews",
+  isAuthenticatedUser,
+  deleteProductReviewsController
+);
 
 export default productRouter;

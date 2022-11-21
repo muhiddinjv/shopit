@@ -137,13 +137,31 @@ export const getProductReviewsController = catchAsyncErrors(
 // DELETE api/review/:id
 export const deleteProductReviewsController = catchAsyncErrors(
   async (req, res) => {
-    let product = Product.findById(req.params.id);
+    const product = await Product.findById(req.query.productId);
 
-    if (!product) {
-      return next(new ErrorHandler("Review not found", 404));
-    }
+    const reviews = product.reviews.filter(
+      (review) => review._id.toString() !== req.query.id.toString()
+    );
 
-    // await product.deleteOne();
+    const numOfReviews = reviews.length;
+
+    const ratings =
+      product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+      reviews.length;
+
+    await Product.findByIdAndUpdate(
+      req.query.productId,
+      {
+        reviews,
+        ratings,
+        numOfReviews,
+      },
+      {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false,
+      }
+    );
 
     res.status(200).send({
       success: true,
