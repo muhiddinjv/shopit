@@ -135,7 +135,7 @@ export const getProductReviewsController = catchAsyncErrors(
 );
 
 // DELETE api/review/:id
-export const deleteProductReviewsController = catchAsyncErrors(
+export const deleteProductReviewController = catchAsyncErrors(
   async (req, res) => {
     const product = await Product.findById(req.query.productId);
 

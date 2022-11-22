@@ -7,7 +7,7 @@ import {
   updateProductController,
   addProductReviewController,
   getProductReviewsController,
-  deleteProductReviewsController,
+  deleteProductReviewController,
 } from "../controllers/productController.js";
 import { isAuthenticatedUser, authorizeRoles } from "../middlewares/auth.js";
 
@@ -39,7 +39,7 @@ productRouter.put("/review", isAuthenticatedUser, addProductReviewController);
 productRouter.delete(
   "/reviews",
   isAuthenticatedUser,
-  deleteProductReviewsController
+  deleteProductReviewController
 );
 
 export default productRouter;
