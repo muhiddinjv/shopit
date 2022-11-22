@@ -1,5 +1,6 @@
 {
   "name": "react-hooks-course",
+  "proxy": "https://127.0.0.1:4000",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

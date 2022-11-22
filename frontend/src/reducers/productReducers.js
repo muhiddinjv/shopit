@@ -5,7 +5,7 @@ import {
   CLEAR_ERRORS,
 } from "../constants/productConstants";
 
-const productReducer = (state = { products: [] }, action) => {
+const productReducers = (state = { products: [] }, action) => {
   switch (action.type) {
     case ALL_PRODUCTS_REQUEST:
       return { loading: true, products: [] };
@@ -24,4 +24,4 @@ const productReducer = (state = { products: [] }, action) => {
   }
 };
 
-export default productReducer;
+export default productReducers;
