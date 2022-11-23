@@ -1,8 +1,8 @@
-import React, { Fragment } from "react";
+import React from "react";
 
 const Header = () => {
   return (
-    <Fragment>
+    <>
       <nav className="navbar row">
         <div className="col-12 col-md-3">
           <div className="navbar-brand">
@@ -39,7 +39,7 @@ const Header = () => {
           </span>
         </div>
       </nav>
-    </Fragment>
+    </>
   );
 };
 
