@@ -15,22 +15,25 @@ export const addProductController = catchAsyncErrors(async (req, res) => {
   });
 });
 
-export const getProductsController = catchAsyncErrors(async (req, res) => {
-  const resPerPage = 8;
-  const productsCount = await Product.countDocuments(); // num of all products in db
-  const apiFeatures = new APIFeatures(Product.find(), req.query)
-    .search()
-    .filter()
-    .pagination(resPerPage);
-  let products = await apiFeatures.query;
+export const getProductsController = catchAsyncErrors(
+  async (req, res, next) => {
+    // return next(new ErrorHandler("My Error", 400)); //to test errorHandler in Frontend
+    const resPerPage = 8;
+    const productsCount = await Product.countDocuments(); // num of all products in db
+    const apiFeatures = new APIFeatures(Product.find(), req.query)
+      .search()
+      .filter()
+      .pagination(resPerPage);
+    let products = await apiFeatures.query;
 
-  res.status(200).send({
-    success: true,
-    count: products.length,
-    productsCount,
-    products,
-  });
-});
+    res.status(200).send({
+      success: true,
+      count: products.length,
+      productsCount,
+      products,
+    });
+  }
+);
 
 export const getProductController = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
