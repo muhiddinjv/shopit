@@ -59,6 +59,14 @@
       {
         "public_id": "products/headphones_t2afnb",
         "url": "https://raw.githubusercontent.com/muhiddinjv/shopit/main/frontend/public/images/headphones.jpg"
+      },
+      {
+        "public_id": "products/i0k1wdwi5hrpmzwxvsds",
+        "url": "https://res.cloudinary.com/bookit/image/upload/v1606293152/products/i0k1wdwi5hrpmzwxvsds.jpg"
+      },
+      {
+        "public_id": "products/bshmuo9qisfhz4azvnsd",
+        "url": "https://res.cloudinary.com/bookit/image/upload/v1606293153/products/bshmuo9qisfhz4azvnsd.jpg"
       }
     ],
     "category": "Headphones",
