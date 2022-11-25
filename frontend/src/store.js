@@ -6,10 +6,14 @@ import {
 // import { configureStore } from "@reduxjs/toolkit";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
-import productReducers from "./reducers/productReducers";
+import {
+  productReducers,
+  productDetailsReducers,
+} from "./reducers/productReducers";
 
 const rootReducer = combineReducers({
   products: productReducers,
+  productDetails: productDetailsReducers,
 });
 
 let initialState = {};
