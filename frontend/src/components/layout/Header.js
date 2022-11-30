@@ -1,13 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
     <>
       <nav className="navbar row">
         <div className="col-12 col-md-3">
-          <div className="navbar-brand">
-            <img src="./images/shopit_logo.png" alt="logo" />
-          </div>
+          <Link className="navbar-brand" to="/">
+            <img src="/images/shopit_logo.png" alt="logo" />
+          </Link>
         </div>
 
         <div className="col-12 col-md-6 mt-2 mt-md-0">

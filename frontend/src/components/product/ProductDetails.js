@@ -6,11 +6,11 @@ import { getProductDetails, clearErrors } from "../../actions/productActions";
 import Loader from "../../components/layout/Loader";
 import { useAlert } from "react-alert";
 import { useParams } from "react-router-dom";
-import { Carousel } from "react-bootstrap";
+import Carousel from "react-bootstrap/Carousel";
 
 const ProductDetails = () => {
   let userId = useParams();
-  console.log("useruserId", userId);
+
   const alert = useAlert();
   const dispatch = useDispatch();
   const { loading, product, error } = useSelector(
@@ -26,8 +26,6 @@ const ProductDetails = () => {
     }
   }, [dispatch, alert, error, userId.id]);
 
-  console.log("loading :>> ", loading);
-
   //https://raw.githubusercontent.com/muhiddinjv/shopit/main/frontend/public/images/sandisk.jpg
 
   return (
@@ -39,15 +37,15 @@ const ProductDetails = () => {
           <MetaData title="Best products online" />
           <h1 id="products_heading">Latest Product</h1>
           <div className="row f-flex justify-content-around">
-            <div className="col-12 col-lg-5 img-fluid" id="product_image">
-              <Carousel>
+            <div className="col-12 col-lg-5 img-fluid">
+              <Carousel pause="hover" variant="dark">
                 {product.images &&
                   product.images.map((image) => (
                     <Carousel.Item key={image.public_id}>
                       <img
-                        className="d-block w-100"
+                        className="d-block w-100 product_image"
                         src={image.url}
-                        alt={product.title}
+                        alt={product.name}
                       />
                     </Carousel.Item>
                   ))}
@@ -91,9 +89,12 @@ const ProductDetails = () => {
               <hr />
 
               <p>
-                Status:{" "}
-                <span id="stock_status">
-                  {product.stock ? "In Stock" : "Out of Stock"}
+                Status:
+                <span
+                  id="stock_status"
+                  className={product.stock > 0 ? "greenColor" : "redColor"}
+                >
+                  {product.stock > 0 ? "In Stock" : "Out of Stock"}
                 </span>
               </p>
 
