@@ -26,8 +26,6 @@ const ProductDetails = () => {
     }
   }, [dispatch, alert, error, userId.id]);
 
-  //https://raw.githubusercontent.com/muhiddinjv/shopit/main/frontend/public/images/sandisk.jpg
-
   return (
     <>
       {loading ? (
