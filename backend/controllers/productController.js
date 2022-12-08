@@ -18,7 +18,7 @@ export const addProductController = catchAsyncErrors(async (req, res) => {
 export const getProductsController = catchAsyncErrors(
   async (req, res, next) => {
     // return next(new ErrorHandler("My Error", 400)); //to test errorHandler in Frontend
-    const resPerPage = 8;
+    const resPerPage = 4;
     const productsCount = await Product.countDocuments(); // num of all products in db
     const apiFeatures = new APIFeatures(Product.find(), req.query)
       .search()
@@ -30,6 +30,7 @@ export const getProductsController = catchAsyncErrors(
       success: true,
       count: products.length,
       productsCount,
+      resPerPage,
       products,
     });
   }
