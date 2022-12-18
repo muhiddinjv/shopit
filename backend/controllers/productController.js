@@ -22,15 +22,20 @@ export const getProductsController = catchAsyncErrors(
     const productsCount = await Product.countDocuments(); // num of all products in db
     const apiFeatures = new APIFeatures(Product.find(), req.query)
       .search()
-      .filter()
-      .pagination(resPerPage);
+      .filter();
+
     let products = await apiFeatures.query;
+    let filteredProductsCount = products.length;
+
+    apiFeatures.pagination(resPerPage);
+    products = await apiFeatures.query;
 
     res.status(200).send({
       success: true,
       count: products.length,
       productsCount,
       resPerPage,
+      filteredProductsCount,
       products,
     });
   }
