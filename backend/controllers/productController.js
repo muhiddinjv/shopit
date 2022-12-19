@@ -28,7 +28,7 @@ export const getProductsController = catchAsyncErrors(
     let filteredProductsCount = products.length;
 
     apiFeatures.pagination(resPerPage);
-    products = await apiFeatures.query;
+    products = await apiFeatures.query.clone();
 
     res.status(200).send({
       success: true,

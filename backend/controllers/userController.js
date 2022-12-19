@@ -182,7 +182,6 @@ export const updateProfileController = catchAsyncErrors(
     };
 
     //TOOD: update avatar
-
     const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
       new: true,
       runValidators: true,
