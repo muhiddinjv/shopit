@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import MetaData from "../layout/MetaData";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductDetails, clearErrors } from "../../actions/productActions";
 // import Product from "../product/Product";
+import MetaData from "../layout/MetaData";
 import Loader from "../../components/layout/Loader";
 import { useAlert } from "react-alert";
 import { useParams } from "react-router-dom";

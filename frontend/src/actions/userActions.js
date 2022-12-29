@@ -7,7 +7,7 @@ import {
   CLEAR_ERRORS,
 } from "../constants/userConstants";
 
-export const login = () => async (email, password) => {
+export const login = (email, password) => async (dispatch) => {
   try {
     dispatch({ type: LOGIN_REQUEST });
     const config = {
@@ -27,4 +27,10 @@ export const login = () => async (email, password) => {
       payload: error.response.data.message,
     });
   }
+};
+
+export const clearErrors = () => async (dispatch) => {
+  dispatch({
+    type: CLEAR_ERRORS,
+  });
 };

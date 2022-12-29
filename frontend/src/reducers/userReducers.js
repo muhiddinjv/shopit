@@ -6,7 +6,7 @@ import {
 } from "../constants/userConstants";
 
 export const authReducer = (state = { user: {} }, action) => {
-  switch (action.payload) {
+  switch (action.type) {
     case LOGIN_REQUEST:
       return {
         loading: true,
