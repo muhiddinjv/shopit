@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import MetaData from "../layout/MetaData";
 import Loader from "../../components/layout/Loader";
