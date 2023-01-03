@@ -8,6 +8,8 @@ import productRouter from "./routes/productRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
 import errorMiddleware from "./middlewares/errors.js";
+import cloudinary from "cloudinary";
+import bodyparser from "body-parser";
 
 //handle uncaught exceptions
 process.on("uncaughtException", (err) => {
@@ -28,6 +30,14 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+//setting up cloudinary config
+const { CLOUD_NAME, API_KEY, API_SECRET } = process.env;
+cloudinary.config({
+  cloud_name: CLOUD_NAME,
+  api_key: API_KEY,
+  api_secret: API_SECRET,
+});
 
 //routes
 app.use("/api", productRouter);

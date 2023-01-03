@@ -4,8 +4,15 @@ import sendToken from "../utils/jwtToken.js";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 import sendEmail from "../utils/sendEmail.js";
 import crypto from "crypto";
+import cloudinary from "cloudinary";
 
 export const registerUserController = catchAsyncErrors(async (req, res) => {
+  const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
+    folder: "avatars",
+    width: 150,
+    crop: "scale",
+  });
+
   const { name, email, password } = req.body;
 
   //<a href="https://www.freepik.com/free-vector/happy-people-avatars_7085154.htm#query=profile%20avatar&position=7&from_view=keyword">Image by pikisuperstar</a>
@@ -15,8 +22,8 @@ export const registerUserController = catchAsyncErrors(async (req, res) => {
     email,
     password,
     avatar: {
-      public_id: "avatars/kccvibpsuimwfepb3m",
-      url: "https://res.cloudinary.com/bookit/image/upload/v1606305757/avatars/kccvibpsuimwfepb3m.png",
+      public_id: result.public_id,
+      url: result.secure_url,
     },
   });
 
