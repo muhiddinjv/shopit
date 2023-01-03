@@ -21,6 +21,10 @@ const Register = () => {
     "/images/default_avatar.jpg"
   );
 
+  const { isAuthenticated, error, loading } = useSelector(
+    (state) => state.auth
+  );
+
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/");
@@ -44,8 +48,20 @@ const Register = () => {
     dispatch(register(formData));
   };
 
-  const onChange = () => {
-    console.log("on change");
+  const onChange = (e) => {
+    if (e.target.name === "avatar") {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setAvatarPreview(reader.result);
+          setAvatar(reader.result);
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    } else {
+      setUser({ ...user, [e.target.name]: e.target.value });
+    }
   };
 
   return (
